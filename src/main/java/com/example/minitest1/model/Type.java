@@ -1,29 +1,25 @@
 package com.example.minitest1.model;
 
+import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
+@Entity
 public class Type {
-    @NotNull(message = "ID khong duoc de trong")
-    private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @NotNull(message = "Ten khong dươc de trong")
-    @Size(min = 2, max = 30, message = "ten phai có tu 2-30 ki tu")
+    @NotBlank(message = "Name is mandatory")
     private String name;
 
-    public Type(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -33,5 +29,13 @@ public class Type {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Type{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

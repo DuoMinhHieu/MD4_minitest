@@ -1,36 +1,38 @@
 package com.example.minitest1.model;
 
-import javax.validation.constraints.*;
-import java.math.BigDecimal;
+import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
+@Entity
 public class Car {
-    @NotNull(message = "ID khong duoc bo trong")
-    private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @NotNull(message = "Code khong duoc bo trong")
-    @Size(min = 2, max = 10, message = "Code phai co tu 2-10 ky tu")
+    @NotBlank(message = "Code is mandatory")
     private String code;
 
-    @NotNull(message = "Name khon +g duoc bỏ trong")
-    @Size(min = 2, max = 50, message = "Name phai co tu 2-50 ky tu")
+    @NotBlank(message = "Name is mandatory")
     private String name;
 
-    @NotNull(message = "Producer khong duoc bo trong")
-    @Size(min = 2, max = 50, message = "Producer phai có tu 2-50 ky tu")
+    @NotBlank(message = "Producer is mandatory")
     private String producer;
 
-    @NotNull(message = "Price khong duoc bo trong")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Price phai lon hon 0")
-    private BigDecimal price;
+    @Min(value = 0, message = "Price must be greater than or equal to 0")
+    private Double price;
 
-    @NotNull(message = "Type khong duoc bo trong")
+    @ManyToOne
+    @JoinColumn(name = "type_id")
+    @NotNull(message = "Type is mandatory")
     private Type type;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -58,11 +60,11 @@ public class Car {
         this.producer = producer;
     }
 
-    public BigDecimal getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -72,5 +74,21 @@ public class Car {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", producer='" + producer + '\'' +
+                ", price=" + price +
+                ", type=" + type +
+                '}';
+    }
+
+    public Object getTypeId() {
+        return null;
     }
 }

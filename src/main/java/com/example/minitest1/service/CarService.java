@@ -1,23 +1,25 @@
 package com.example.minitest1.service;
 
 import com.example.minitest1.model.Car;
-import org.springframework.stereotype.Service;
-
-import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
-@Service
-public class CarService implements ICarService{
-    private List<Car> cars = new ArrayList<>();
+public interface CarService {
 
-    @Override
-    public List<Car> getAllCars() {
-        return cars;
-    }
+    List<Car> getAllCars();
 
-    @Override
-    public void addCar(@Valid Car car) {
-        cars.add(car);
-    }
+    Car getCarById(int id);
+
+    void addCar(Car car);
+
+    void updateCar(Car updatedCar);
+
+    void deleteCar(int id);
+
+    List<Car> findAll();
+
+    Car findById(Long id);
+
+    Car save(Car car);
+
+    void deleteById(Long id);
 }
