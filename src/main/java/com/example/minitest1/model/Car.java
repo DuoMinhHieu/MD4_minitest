@@ -1,32 +1,41 @@
 package com.example.minitest1.model;
 
+import org.springframework.stereotype.Component;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.Validator;
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
+@Component
 @Entity
-public class Car {
+@Table(name = "car")
+
+public class Car  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank(message = "Code is mandatory")
     private String code;
-
-    @NotBlank(message = "Name is mandatory")
     private String name;
-
-    @NotBlank(message = "Producer is mandatory")
     private String producer;
-
-    @Min(value = 0, message = "Price must be greater than or equal to 0")
-    private Double price;
+    private String price;
 
     @ManyToOne
     @JoinColumn(name = "type_id")
-    @NotNull(message = "Type is mandatory")
     private Type type;
+
+
+    public Car() {
+
+    }
+
+    public Car(Long id, String code, String name, String producer, String price, Type type) {
+        this.id = id;
+        this.code = code;
+        this.name = name;
+        this.producer = producer;
+        this.price = price;
+        this.type = type;
+    }
 
     public Long getId() {
         return id;
@@ -60,11 +69,11 @@ public class Car {
         this.producer = producer;
     }
 
-    public Double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
@@ -74,21 +83,5 @@ public class Car {
 
     public void setType(Type type) {
         this.type = type;
-    }
-
-    @Override
-    public String toString() {
-        return "Car{" +
-                "id=" + id +
-                ", code='" + code + '\'' +
-                ", name='" + name + '\'' +
-                ", producer='" + producer + '\'' +
-                ", price=" + price +
-                ", type=" + type +
-                '}';
-    }
-
-    public Object getTypeId() {
-        return null;
     }
 }

@@ -1024,8 +1024,8 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <Charset>utf8mb4</Charset>
     </collation>
     <schema id="288" parent="1" name="car">
-      <IntrospectionTimestamp>2024-05-23.04:10:21</IntrospectionTimestamp>
-      <LocalIntrospectionTimestamp>2024-05-22.14:10:21</LocalIntrospectionTimestamp>
+      <IntrospectionTimestamp>2024-05-24.22:01:56</IntrospectionTimestamp>
+      <LocalIntrospectionTimestamp>2024-05-24.08:01:56</LocalIntrospectionTimestamp>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <schema id="289" parent="1" name="casestudy">
@@ -1122,5 +1122,78 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <Host>localhost</Host>
       <Plugin>caching_sha2_password</Plugin>
     </user>
+    <table id="318" parent="288" name="car">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_0900_ai_ci</CollationName>
+    </table>
+    <table id="319" parent="288" name="type">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_0900_ai_ci</CollationName>
+    </table>
+    <column id="320" parent="318" name="id">
+      <AutoIncrement>1</AutoIncrement>
+      <DasType>bigint|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+    </column>
+    <column id="321" parent="318" name="code">
+      <DasType>varchar(255)|0s</DasType>
+      <Position>2</Position>
+    </column>
+    <column id="322" parent="318" name="name">
+      <DasType>varchar(255)|0s</DasType>
+      <Position>3</Position>
+    </column>
+    <column id="323" parent="318" name="price">
+      <DasType>varchar(255)|0s</DasType>
+      <Position>4</Position>
+    </column>
+    <column id="324" parent="318" name="producer">
+      <DasType>varchar(255)|0s</DasType>
+      <Position>5</Position>
+    </column>
+    <column id="325" parent="318" name="type_id">
+      <DasType>bigint|0s</DasType>
+      <Position>6</Position>
+    </column>
+    <foreign-key id="326" parent="318" name="FKsm9e22xf11158r969296ut6or">
+      <ColNames>type_id</ColNames>
+      <RefColNames>id</RefColNames>
+      <RefTableName>type</RefTableName>
+    </foreign-key>
+    <index id="327" parent="318" name="PRIMARY">
+      <ColNames>id</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <index id="328" parent="318" name="FKsm9e22xf11158r969296ut6or">
+      <ColNames>type_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="329" parent="318" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
+    </key>
+    <column id="330" parent="319" name="id">
+      <AutoIncrement>1</AutoIncrement>
+      <DasType>bigint|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+    </column>
+    <column id="331" parent="319" name="name">
+      <DasType>varchar(255)|0s</DasType>
+      <Position>2</Position>
+    </column>
+    <index id="332" parent="319" name="PRIMARY">
+      <ColNames>id</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <key id="333" parent="319" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
+    </key>
   </database-model>
 </dataSource>

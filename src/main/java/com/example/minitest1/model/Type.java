@@ -1,19 +1,23 @@
 package com.example.minitest1.model;
 
+import org.springframework.stereotype.Component;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
+
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
-
+@Component
 @Entity
-public class Type {
+@Table(name = "type")
+public class Type{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Name is mandatory")
     private String name;
+
+    public Type() {
+    }
 
     public Long getId() {
         return id;
@@ -31,11 +35,5 @@ public class Type {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "Type{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
+
 }
