@@ -1,10 +1,12 @@
 package com.example.minitest1.service.impl;
 
+import com.example.minitest1.exception.DuplicateCodeException;
 import com.example.minitest1.model.Car;
 import com.example.minitest1.model.Type;
 import com.example.minitest1.repository.ICarRepository;
 import com.example.minitest1.service.ICarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,8 +24,12 @@ public class CarService implements ICarService {
     }
 
     @Override
-    public void save(Car car) {
-        iCarRepository.save(car);
+    public void save(Car car) throws DuplicateCodeException {
+        try {
+            iCarRepository.save(car);
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicateCodeException();
+        }
     }
 
     @Override
@@ -47,7 +53,7 @@ public class CarService implements ICarService {
     }
 
     @Override
-    public Page<Car> findAllByCodeContaining(Pageable pageable, String name) {
-        return iCarRepository.findAllByCodeContaining(pageable, name);
+    public Page<Car> findAllByCodeContaining(Pageable pageable, String code) {
+        return iCarRepository.findAllByCodeContaining(pageable, code);
     }
 }

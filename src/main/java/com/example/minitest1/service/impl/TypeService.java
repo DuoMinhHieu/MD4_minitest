@@ -7,12 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
 @Service
+
 public class TypeService implements ITypeService {
     @Autowired
     private ITypeRepository iTypeRepository;
-
     @Override
     public Iterable<Type> findAll() {
         return iTypeRepository.findAll();

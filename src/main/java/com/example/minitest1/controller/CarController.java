@@ -1,25 +1,25 @@
+
 package com.example.minitest1.controller;
 
+
+import com.example.minitest1.exception.DuplicateCodeException;
+import com.example.minitest1.model.Car;
+import com.example.minitest1.model.Type;
 import com.example.minitest1.service.ICarService;
 import com.example.minitest1.service.ITypeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import com.example.minitest1.model.Car;
-import com.example.minitest1.model.Type;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/cars")
 public class CarController {
     @Autowired
     private ICarService carService;
@@ -28,83 +28,79 @@ public class CarController {
     private ITypeService typeService;
 
     @ModelAttribute("types")
-    public Iterable<Type> listTypes() {
+    public Iterable<Type> listType() {
         return typeService.findAll();
     }
-    @GetMapping("/cars")
-    public ModelAndView listTour() {
+
+    @GetMapping("/car")
+    public ModelAndView listCar() {
         ModelAndView modelAndView = new ModelAndView("list");
         Iterable<Car> cars = carService.findAll();
         modelAndView.addObject("cars", cars);
         return modelAndView;
     }
 
-    @GetMapping
-    public ModelAndView listCar(Pageable pageable) {
-        Page<Car> cars = carService.findAll(pageable);
-        ModelAndView modelAndView = new ModelAndView("/car/list");
-        modelAndView.addObject("cars", cars);
+    @GetMapping("/cars/search")
+    public ModelAndView search(@RequestParam("search") String search, @RequestParam(defaultValue = "0") int page) {
+        ModelAndView modelAndView = new ModelAndView("list");
+        PageRequest pageable = PageRequest.of(page, 10);
+        modelAndView.addObject("cars", carService.findAllByCodeContaining(pageable, search));
+        modelAndView.addObject("search", search);
         return modelAndView;
     }
-
-    @GetMapping("/search")
-    public ModelAndView listCarsSearch(@RequestParam("search") Optional<String> search, Pageable pageable){
-        Page<Car> cars;
-        if(search.isPresent()){
-            cars = carService.findAllByCodeContaining(pageable, search.get());
-        } else {
-            cars = carService.findAll(pageable);
-        }
-        ModelAndView modelAndView = new ModelAndView("/car/list");
-        modelAndView.addObject("cars", cars);
-        return modelAndView;
-    }
-
     @GetMapping("/create")
-    public ModelAndView createForm() {
-        ModelAndView modelAndView = new ModelAndView("/car/create");
-        modelAndView.addObject("car", new Car());
-        return modelAndView;
+    public String createForm(Model model) {
+        model.addAttribute("car", new Car());
+        return "create";
+    }
+    @PostMapping("/save")
+    public String save(Car car) throws DuplicateCodeException {
+        carService.save(car);
+        return "redirect:/car";
     }
 
     @PostMapping("/create")
-    public String create(@Valid @ModelAttribute("car") Car car,
-                         BindingResult bindingResult, RedirectAttributes redirect) {
+    public String checkValidation(@Valid Car car, Model model, BindingResult bindingResult) throws DuplicateCodeException {
+        new Car().validate(car, bindingResult);
         if (bindingResult.hasErrors()) {
-            return "type/create";
+            return "create";
         }
         carService.save(car);
-        redirect.addFlashAttribute("message", "Create new car successfully");
-        return "redirect:/cars";
+        model.addAttribute("message", "New car created successfully");
+        return "redirect:/car";
     }
 
     @GetMapping("/update/{id}")
     public ModelAndView updateForm(@PathVariable Long id) {
         Optional<Car> car = carService.findById(id);
         if (car.isPresent()) {
-            ModelAndView modelAndView = new ModelAndView("/car/update");
+            ModelAndView modelAndView = new ModelAndView("/update");
             modelAndView.addObject("car", car.get());
             return modelAndView;
         } else {
-            return new ModelAndView("/error_404");
+            return new ModelAndView("inputs-not-acceptable");
         }
     }
 
     @PostMapping("/update/{id}")
-    public String update(@ModelAttribute("car") Car car,
-                         RedirectAttributes redirect) {
+    public String checkValidationUpdate(@Valid Car car, Model model, BindingResult bindingResult)throws DuplicateCodeException {
+        new Car().validate(car, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "update";
+        }
         carService.save(car);
-        redirect.addFlashAttribute("message", "Update car successfully");
-        return "redirect:/cars";
+        model.addAttribute("message", "car updated successfully");
+        return "redirect:/car";
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id,
-                         RedirectAttributes redirect) {
+    public String delete(@PathVariable Long id, RedirectAttributes redirect) {
         carService.remove(id);
-        redirect.addFlashAttribute("message", "Delete car successfully");
-        return "redirect:/cars";
+        redirect.addFlashAttribute("message", "Car deleted successfully");
+        return "redirect:/car";
     }
-
-
+    @ExceptionHandler(DuplicateCodeException.class)
+    public ModelAndView showInputNotAcceptable() {
+        return new ModelAndView("/inputs-not-acceptable");
+    }
 }

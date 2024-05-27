@@ -10,41 +10,6 @@
         Back to car list
     </a>
 </p>
-<!--<div id="form">-->
-<!--    <form th:action="@{/cars/create}" th:object="${car}"-->
-<!--          method="POST" novalidate="novalidate">-->
-<!--        <input type="hidden" th:field="*{id}"/>-->
-<!--        <div>-->
-<!--            <label for="code">Code</label>-->
-<!--            <input type="text" id="code" th:field="*{code}"/> <br>-->
-<!--            <p th:if="${#fields.hasErrors('code')}" th:errors="*{code}">Code Error</p>-->
-<!--        </div>-->
-<!--        <div>-->
-<!--            <label for="name">Name</label>-->
-<!--            <input type="text" id="name" th:field="*{name}"/>-->
-<!--            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</p>-->
-<!--        </div>-->
-<!--        <div>-->
-<!--            <label for="producer">Producer</label>-->
-<!--            <input type="text" id="producer" th:field="*{producer}"/>-->
-<!--            <p th:if="${#fields.hasErrors('producer')}" th:errors="*{producer}">Producer Error</p>-->
-<!--        </div>-->
-
-<!--        <div>-->
-<!--            <label for="price">Price</label>-->
-<!--            <input type="text" id="price" th:field="*{price}"/>-->
-<!--            <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price Error</p>-->
-<!--        </div>-->
-<!--        <div>-->
-<!--            <label for="type">Province</label>-->
-<!--            <select id="type" th:field="*{type}">-->
-<!--                <option th:each="p : ${types}" th:value="${p.id}" th:text="${p.name}"></option>-->
-<!--            </select>-->
-<!--        </div>-->
-<!--        <input type="submit" value="Save"/>-->
-<!--    </form>-->
-<!--</div>-->
-
 <div id="form">
     <form th:action="@{/cars/create}" th:object="${car}"
           method="POST" novalidate="novalidate">
@@ -71,9 +36,9 @@
             <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price Error</p>
         </div>
         <div>
-            <label for="type">Type</label>
-            <select id="type" th:field="*{type.id}">
-                <option th:each="type : ${types}" th:value="${type.id}" th:text="${type.name}"></option>
+            <label for="type">Province</label>
+            <select id="type" th:field="*{type}">
+                <option th:each="p : ${types}" th:value="${p.id}" th:text="${p.name}"></option>
             </select>
         </div>
         <input type="submit" value="Save"/>
